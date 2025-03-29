@@ -1,0 +1,143 @@
+# Query Processing API
+
+This project provides an API for processing natural language queries and converting them into SQL statements.
+
+## Features
+- Natural language query processing
+- Secure authentication using JWT
+- SQLite database integration
+- API endpoints for query validation, execution, and explanation
+
+---
+
+## Setup Instructions
+
+### Prerequisites
+- Node.js (v16 or later)
+- SQLite3
+- Git
+
+### Installation Steps
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-username/your-repo.git
+   cd your-repo
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Set up environment variables by creating a `.env` file:
+   ```sh
+   SECRET_KEY=your-secret-key
+   PORT=your-port-number
+   ```
+4. Start the server:
+   ```sh
+   npm run dev
+   ```
+
+---
+
+## API Documentation
+
+### Authentication
+#### Generate Token
+- **Endpoint:** `POST /api/token`
+- **Request Body:**
+  ```json
+  {
+    "userName": "Admin",
+    "email": "naocha@github.com"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "token": "jwt-token-string"
+  }
+  ```
+
+### Query Processing
+#### Process Query
+- **Endpoint:** `POST /api/query`
+- **Request Body:**
+  ```json
+  {
+    "question": "total sales"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "query": "SELECT SUM(amount) AS total_sales FROM sales;",
+    "data": [ { "total_sales": 5000 } ]
+  }
+  ```
+
+#### Validate Query
+- **Endpoint:** `POST /api/validate`
+- **Request Body:**
+  ```json
+  {
+    "question": "total sales"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "valid": true,
+    "message": "Query is valid and can be processed"
+  }
+  ```
+
+#### Explain Query
+- **Endpoint:** `POST /api/explain`
+- **Request Body:**
+  ```json
+  {
+    "question": "total sales"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "explanation": "This query retrieves the total sales amount from the sales table.",
+    "query": "SELECT SUM(amount) AS total_sales FROM sales;"
+  }
+  ```
+
+---
+
+## Sample Query Examples
+
+### Example 1: Get Total Sales
+**Input:**
+```json
+{
+  "question": "total sales"
+}
+```
+**Output:**
+```json
+{
+  "query": "SELECT SUM(amount) AS total_sales FROM sales;",
+  "data": [ { "total_sales": 5000 } ]
+}
+```
+
+### Example 2: Get Sales Between Two Dates
+**Input:**
+```json
+{
+  "question": "give sales between 2024-02-01 and 2024-03-05"
+}
+```
+**Output:**
+```json
+{
+  "query": "SELECT * FROM sales WHERE date BETWEEN '2024-02-01' AND '2024-03-05';",
+  "data": [ { "id": 1, "date": "2024-02-10", "amount": 1200 } ]
+}
+```
+
